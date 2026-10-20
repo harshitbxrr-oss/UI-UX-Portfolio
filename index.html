@@ -1076,15 +1076,12 @@
     event.preventDefault();
     const formData = new FormData(contactForm);
     const name = `${formData.get('firstName')} ${formData.get('lastName')}`.trim();
-    const composeUrl = new URL('https://mail.google.com/mail/');
+    const composeUrl = new URL('mailto:harshitbxrr@gmail.com');
     composeUrl.search = new URLSearchParams({
-      view: 'cm',
-      fs: '1',
-      to: 'harshitbxrr@gmail.com',
-      su: `Portfolio inquiry from ${name}`,
+      subject: `Portfolio inquiry from ${name}`,
       body: `Name: ${name}\nEmail: ${formData.get('email')}\n\n${formData.get('message')}`
     });
-    window.open(composeUrl.toString(), '_blank', 'noopener,noreferrer');
+    window.location.href = composeUrl.toString();
   });
 
   // Mobile nav toggle
