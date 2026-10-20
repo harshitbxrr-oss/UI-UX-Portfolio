@@ -112,7 +112,7 @@ h2 { margin-bottom: 0; font: 600 clamp(39px, 5vw, 69px)/1.06 var(--font-display)
 .problem-grid { display: grid; grid-template-columns: .62fr 1.3fr; gap: 5vw; align-items: start; }
 .problem-grid > .eyebrow { padding-top: 10px; color: #77746d; }
 .problem-grid h2 { font-size: clamp(42px, 5.8vw, 78px); }
-.problem-grid h2 em { color: #9c7553; }
+.problem-grid h2 em { color: #9c7553; display: inline-block; margin-right: 0.14em; }
 .body-large { max-width: 540px; margin: 24px 0 0; color: #65625c; font-size: 14px; line-height: 1.8; }
 .fragmented-flow { margin-top: 75px; padding: 27px 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #cfcbc1; border-bottom: 1px solid #cfcbc1; }
 .fragmented-flow > div { display: grid; grid-template-columns: 35px 1fr; align-items: center; gap: 2px 10px; flex: 1; }
