@@ -211,12 +211,15 @@
   .hero-fact strong{ color:var(--ink); font-weight:700; }
   .hero-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:32px; }
   .hero-links{ display:flex; align-items:center; gap:10px; margin-top:36px; }
-  .hero-links a{
+  .hero-links a, .hero-links button{
     width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--surface);
     display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
-    transition:all .2s var(--ease);
+    transition:all .2s var(--ease); cursor:pointer; font:inherit; padding:0;
   }
-  .hero-links a:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+  .hero-links a:hover, .hero-links button:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+  .hero-links button:active{ transform:scale(.92); }
+  .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--card); padding:11px 22px; border-radius:999px; font-size:13.5px; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,.22); opacity:0; pointer-events:none; z-index:9999; transition:transform .3s var(--ease), opacity .3s var(--ease); display:flex; align-items:center; gap:8px; border:1px solid var(--line); }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   .hero-visual{ position:relative; display:flex; justify-content:center; }
   .hero-portrait{ width:min(100%,390px); height:440px; border-radius:var(--r-xl); overflow:hidden; background:var(--surface); box-shadow:var(--shadow-lg); }
@@ -685,7 +688,7 @@
           <div class="hero-links">
             <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><svg class="icon"><use href="#i-mail"/></svg></a>
             <a href="#work" aria-label="Work"><svg class="icon"><use href="#i-grid"/></svg></a>
-            <a href="https://www.linkedin.com/in/harshit-sinha-872bb9257?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><svg class="icon"><use href="#i-external"/></svg></a>
+            <button type="button" id="shareBtn" aria-label="Share portfolio" title="Share portfolio"><svg class="icon"><use href="#i-external"/></svg></button>
           </div>
         </div>
         <div class="hero-visual">
@@ -1397,6 +1400,50 @@
       }
       requestAnimationFrame(step);
     }
+  }
+
+  // Share portfolio button
+  const shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) {
+    let toastTimer;
+    function showShareToast(msg) {
+      let toast = document.getElementById('shareToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'shareToast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+    }
+    shareBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const shareUrl = window.location.origin && window.location.origin !== 'null'
+        ? window.location.href.split('#')[0]
+        : 'https://harshitbxrr-oss.github.io/UI-UX-Portfolio/';
+      const shareData = {
+        title: 'Harshit Kumar Sinha — UI/UX Designer Portfolio',
+        text: 'Explore the portfolio of Harshit Kumar Sinha — UI/UX Designer',
+        url: shareUrl
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showShareToast('✓ Portfolio link copied to clipboard!');
+      } catch {
+        prompt('Copy this portfolio link:', shareUrl);
+      }
+    });
   }
 
   // Now that every const/function above is initialized, it's safe to kick off the load sequence.
