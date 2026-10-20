@@ -36,13 +36,13 @@ img { display: block; max-width: 100%; }
 .site-nav { display: flex; align-items: center; gap: clamp(22px, 3.5vw, 54px); font-size: 12px; font-weight: 600; }
 .site-nav a:not(.nav-cta) { transition: color .2s; }
 .site-nav a:not(.nav-cta):hover, .text-link:hover, .inline-link:hover { color: var(--purple); }
-.portfolio-return { padding: 12px 17px; border: 1px solid rgba(25,25,22,.3); border-radius: 999px; font-weight: 700; white-space: nowrap; transition: color .2s, background .2s, border-color .2s; }
+.portfolio-return { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border: 1px solid rgba(25,25,22,.3); border-radius: 999px; font-size: 14px; font-weight: 700; white-space: nowrap; transition: color .2s, background .2s, border-color .2s; }
 .portfolio-return:hover { color: white; background: var(--ink); border-color: var(--ink); }
-.nav-cta { padding: 12px 17px; border: 1px solid rgba(25,25,22,.3); border-radius: 999px; transition: color .2s, background .2s, border-color .2s; }
+.nav-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border: 1px solid rgba(25,25,22,.3); border-radius: 999px; font-size: 14px; font-weight: 700; transition: color .2s, background .2s, border-color .2s; }
 .nav-cta:hover { color: white; background: var(--ink); border-color: var(--ink); }
 .nav-cta span { margin-left: 9px; }
 .header-actions { display: flex; align-items: center; gap: 9px; }
-.theme-toggle { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; cursor: pointer; font-size: 11px; font-weight: 700; transition: background .2s, color .2s, border-color .2s; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 10px 20px; border: 1px solid rgba(25,25,22,.3); border-radius: 999px; background: transparent; cursor: pointer; font-size: 14px; font-weight: 700; transition: background .2s, color .2s, border-color .2s; }
 .theme-toggle:hover { color: white; background: var(--ink); border-color: var(--ink); }
 .theme-icon { font-size: 16px; line-height: 1; }
 .menu-toggle { display: none; }
