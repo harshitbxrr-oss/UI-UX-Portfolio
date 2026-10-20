@@ -174,8 +174,12 @@ function applyTheme(theme, persist = false) {
   document.documentElement.dataset.theme = enableDarkMode ? "dark" : "light";
   themeToggle.setAttribute("aria-pressed", String(enableDarkMode));
   themeToggle.setAttribute("aria-label", `Switch to ${enableDarkMode ? "light" : "dark"} mode`);
-  themeIcon.textContent = enableDarkMode ? "☀" : "☾";
-  themeLabel.textContent = enableDarkMode ? "Light mode" : "Dark mode";
+  themeIcon.innerHTML = enableDarkMode
+    ? '<circle cx="12" cy="12" r="4.3"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/>'
+    : '<path d="M20 14.2A8.5 8.5 0 1 1 9.8 4a7 7 0 0 0 10.2 10.2z"/>';
+  if (themeLabel) {
+    themeLabel.textContent = enableDarkMode ? "Light mode" : "Dark mode";
+  }
   themeColor.content = enableDarkMode ? "#171715" : "#f7f5f0";
   if (persist) {
     try {
