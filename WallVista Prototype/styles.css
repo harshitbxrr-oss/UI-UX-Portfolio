@@ -802,7 +802,7 @@ h2 { margin-bottom: 0; font: 600 clamp(39px, 5vw, 69px)/1.06 var(--font-display)
 .voices-heading h2 { color: #fbf9f3; }
 .voices-heading h2 em { color: #c6d49b; }
 .voices-heading > p { max-width: 360px; margin: 0 0 6px; color: #ded9ef; font-size: 16px; font-weight: 600; line-height: 1.65; }
-.voice-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 46px; }
+.voice-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 46px; }
 .voice-card { min-height: 290px; position: relative; display: flex; align-items: flex-end; overflow: hidden; border: 1px solid rgba(255,255,255,.22); background: #403778; }
 .voice-vivek { background: #75614f; }
 .voice-ajeet { background: #515c4b; }
