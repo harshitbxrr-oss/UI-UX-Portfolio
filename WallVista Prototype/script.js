@@ -134,6 +134,18 @@ const themeIcon = themeToggle.querySelector(".theme-icon");
 const themeLabel = themeToggle.querySelector(".theme-label");
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const prototypeFrame = document.querySelector(".prototype-embed iframe");
+const themeStorageKey = "portfolio-theme";
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+function readThemePreference() {
+  try {
+    const savedTheme = window.localStorage.getItem(themeStorageKey);
+    return savedTheme === "dark" || savedTheme === "light" ? savedTheme : null;
+  } catch (error) {
+    console.error("Unable to read the saved theme preference.", error);
+    return null;
+  }
+}
 
 function syncPrototypeTheme() {
   const frameDocument = prototypeFrame.contentDocument;
@@ -157,15 +169,41 @@ function resizePrototypeFrame(frameDocument) {
 prototypeFrame.addEventListener("load", syncPrototypeTheme);
 window.addEventListener("resize", syncPrototypeTheme);
 
-themeToggle.addEventListener("click", () => {
-  const enableDarkMode = document.documentElement.dataset.theme !== "dark";
+function applyTheme(theme, persist = false) {
+  const enableDarkMode = theme === "dark";
   document.documentElement.dataset.theme = enableDarkMode ? "dark" : "light";
   themeToggle.setAttribute("aria-pressed", String(enableDarkMode));
   themeToggle.setAttribute("aria-label", `Switch to ${enableDarkMode ? "light" : "dark"} mode`);
   themeIcon.textContent = enableDarkMode ? "☀" : "☾";
   themeLabel.textContent = enableDarkMode ? "Light mode" : "Dark mode";
   themeColor.content = enableDarkMode ? "#171715" : "#f7f5f0";
+  if (persist) {
+    try {
+      window.localStorage.setItem(themeStorageKey, theme);
+    } catch (error) {
+      console.error("Unable to save the theme preference.", error);
+    }
+  }
   syncPrototypeTheme();
+}
+
+applyTheme(readThemePreference() || (systemDark ? "dark" : "light"));
+
+window.addEventListener("storage", (event) => {
+  if (event.key === themeStorageKey) {
+    applyTheme(
+      event.newValue === "dark" || event.newValue === "light"
+        ? event.newValue
+        : systemDark
+          ? "dark"
+          : "light",
+    );
+  }
+});
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme, true);
 });
 
 menuToggle.addEventListener("click", () => {

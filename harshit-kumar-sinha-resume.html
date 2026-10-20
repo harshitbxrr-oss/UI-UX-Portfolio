@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f6f8">
+  <title>Harshit Kumar Sinha — Resume</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;padding:32px 20px;background:#f3f4f7;color:#202533;font-family:Arial,Helvetica,sans-serif}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:900px;margin:0 auto 20px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 17px;border:1px solid #d6dae4;border-radius:999px;background:#fff;color:#202533;font:600 14px Arial,Helvetica,sans-serif;text-decoration:none;cursor:pointer}
+    .button-primary{border-color:#5268e8;background:#5268e8;color:#fff}
+    .resume{max-width:900px;margin:0 auto;padding:56px 64px;border:1px solid #e2e5ec;border-radius:20px;background:#fff;box-shadow:0 18px 48px rgba(28,35,54,.1)}
+    .resume-header{padding-bottom:22px;border-bottom:2px solid #5268e8}
+    h1{margin:0;color:#171b26;font-size:38px;line-height:1.1}
+    .title{margin:7px 0 0;color:#5268e8;font-size:18px;font-weight:700}
+    .contact{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:13px}
+    .contact a{color:#354bbd;text-decoration:underline;text-underline-offset:2px}
+    .block{margin-top:24px}
+    .block h2{margin:0 0 12px;padding-bottom:6px;border-bottom:1px solid #dfe3ec;color:#354bbd;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+    .block p{margin:0;color:#414858;font-size:14px;line-height:1.65}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+    .tag-list li{padding:5px 10px;border:1px solid #dfe3ec;border-radius:100px;color:#303747;font-size:12px}
+    .entry{margin-top:14px;break-inside:avoid}
+    .entry:first-child{margin-top:0}
+    .entry-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+    .entry h3{margin:0;color:#202533;font-size:16px}
+    .entry-meta{color:#687083;font-size:12px;font-weight:600}
+    .entry-role{margin:3px 0 0!important;color:#354bbd!important;font-size:13px!important;font-weight:600}
+    .entry-description{margin-top:6px!important}
+    .entry-bullets{margin:7px 0 0 18px;padding:0;list-style:disc}
+    .entry-bullets li{margin:4px 0;color:#414858;font-size:13px;line-height:1.5}
+    .entry-tags{margin-top:7px!important;color:#687083!important;font-size:12px!important}
+    .error{max-width:900px;margin:0 auto 16px;padding:12px 16px;border:1px solid #c33;border-radius:8px;background:#fff0f0;color:#8d1111}
+    [hidden]{display:none!important}
+    @media(max-width:640px){
+      body{padding:20px 12px}
+      .resume{padding:32px 24px;border-radius:14px}
+      h1{font-size:30px}
+      .entry-head{align-items:flex-start;flex-direction:column;gap:3px}
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a class="button" href="index.html">Back to Portfolio</a>
+    <button class="button button-primary" id="downloadResume" type="button">Download</button>
+  </div>
+  <p class="error" id="dataError" role="alert" hidden></p>
+  <main class="resume">
+    <header class="resume-header">
+      <h1>Harshit Kumar Sinha</h1>
+      <p class="title">UI/UX Designer</p>
+      <div class="contact">
+        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer">harshitbxrr@gmail.com</a>
+        <a href="https://www.linkedin.com/in/harshit-sinha-872bb9257?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.behance.net/harshitsinha1" target="_blank" rel="noopener noreferrer">Behance</a>
+      </div>
+    </header>
+    <section class="block">
+      <h2>Profile</h2>
+      <p id="profile"></p>
+    </section>
+    <section class="block">
+      <h2>Skills</h2>
+      <ul class="tag-list" id="skills"></ul>
+    </section>
+    <section class="block" id="experienceBlock" hidden>
+      <h2>Experience</h2>
+      <div id="experience"></div>
+    </section>
+    <section class="block" id="projectsBlock" hidden>
+      <h2>Selected Projects</h2>
+      <div id="projects"></div>
+    </section>
+    <section class="block">
+      <h2>Strengths</h2>
+      <ul class="tag-list" id="strengths"></ul>
+    </section>
+  </main>
+  <script>
+    const defaultData = {
+      profile: 'I turn early ideas into interfaces that feel obvious to use — shaped by research, refined in the details, and tested with real people before they ship.',
+      skills: ['Figma', 'Adobe XD', 'Sketch', 'Photoshop', 'Illustrator', 'Framer', 'Wireframing', 'Prototyping', 'User Research', 'Usability Testing', 'Design Systems', 'Design Tokens', 'Dev Handoff', 'Notion', 'Information Architecture', 'Interaction Design', 'Accessibility', 'Design Thinking'],
+      strengths: ['Empathy', 'Communication', 'Collaboration', 'Problem Solving', 'Creativity', 'Adaptability', 'Storytelling', 'Attention to Detail'],
+      experience: [],
+      projects: []
+    };
+    const error = document.getElementById('dataError');
+    let resumeData = defaultData;
+    const dataParam = new URLSearchParams(window.location.search).get('data');
+    if (dataParam){
+      try{
+        const parsed = JSON.parse(dataParam);
+        if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.skills) || !Array.isArray(parsed.strengths)){
+          throw new TypeError('Resume data is incomplete.');
+        }
+        resumeData = { ...defaultData, ...parsed };
+      } catch (exception){
+        error.textContent = `Portfolio details could not be loaded: ${exception.message}`;
+        error.hidden = false;
+      }
+    }
+
+    document.getElementById('profile').textContent = resumeData.profile || defaultData.profile;
+    function addTags(targetId, values){
+      const list = document.getElementById(targetId);
+      [...new Set(values)].forEach((value) => {
+        const item = document.createElement('li');
+        item.textContent = value;
+        list.append(item);
+      });
+    }
+    addTags('skills', resumeData.skills);
+    addTags('strengths', resumeData.strengths);
+
+    function addEntries(targetId, blockId, entries){
+      const container = document.getElementById(targetId);
+      entries.forEach((entry) => {
+        const article = document.createElement('article');
+        article.className = 'entry';
+        const heading = document.createElement('div');
+        heading.className = 'entry-head';
+        const title = document.createElement('h3');
+        title.textContent = entry.title || '';
+        heading.append(title);
+        if (entry.meta){
+          const meta = document.createElement('span');
+          meta.className = 'entry-meta';
+          meta.textContent = entry.meta;
+          heading.append(meta);
+        }
+        article.append(heading);
+        if (entry.role){
+          const role = document.createElement('p');
+          role.className = 'entry-role';
+          role.textContent = entry.role;
+          article.append(role);
+        }
+        if (entry.description){
+          const description = document.createElement('p');
+          description.className = 'entry-description';
+          description.textContent = entry.description;
+          article.append(description);
+        }
+        if (Array.isArray(entry.bullets) && entry.bullets.length){
+          const bullets = document.createElement('ul');
+          bullets.className = 'entry-bullets';
+          entry.bullets.forEach((text) => {
+            const item = document.createElement('li');
+            item.textContent = text;
+            bullets.append(item);
+          });
+          article.append(bullets);
+        }
+        if (Array.isArray(entry.tags) && entry.tags.length){
+          const tags = document.createElement('p');
+          tags.className = 'entry-tags';
+          tags.textContent = entry.tags.join(' · ');
+          article.append(tags);
+        }
+        container.append(article);
+      });
+      document.getElementById(blockId).hidden = entries.length === 0;
+    }
+    addEntries('experience', 'experienceBlock', Array.isArray(resumeData.experience) ? resumeData.experience : []);
+    addEntries('projects', 'projectsBlock', Array.isArray(resumeData.projects) ? resumeData.projects : []);
+    function pdfText(value){
+      return String(value ?? '')
+        .replace(/[—–]/g, '-')
+        .replace(/·/g, '|')
+        .replace(/→/g, '>')
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\x20-\x7E]/g, '')
+        .replace(/\\/g, '\\\\')
+        .replace(/\(/g, '\\(')
+        .replace(/\)/g, '\\)');
+    }
+
+    function makeResumePdf(data){
+      const pageWidth = 595;
+      const pageHeight = 842;
+      const margin = 48;
+      const usableWidth = pageWidth - margin * 2;
+      const pages = [];
+      let commands;
+      let y;
+
+      function startPage(continued = false){
+        commands = [];
+        pages.push(commands);
+        y = 52;
+        if (continued){
+          drawText('Harshit Kumar Sinha - Resume (continued)', margin, y, 9, true, '0.32 0.41 0.91');
+          y += 24;
+        }
+      }
+
+      function drawText(text, x, top, size = 10, bold = false, color = '0.13 0.15 0.20'){
+        const baseline = pageHeight - top;
+        commands.push(`BT /${bold ? 'F2' : 'F1'} ${size} Tf ${color} rg 1 0 0 1 ${x} ${baseline} Tm (${pdfText(text)}) Tj ET`);
+      }
+
+      function ensureSpace(height){
+        if (y + height > pageHeight - margin){
+          startPage(true);
+        }
+      }
+
+      function writeWrapped(text, options = {}){
+        const size = options.size || 10;
+        const indent = options.indent || 0;
+        const maxChars = Math.max(30, Math.floor((usableWidth - indent) / (size * 0.52)));
+        const words = String(text ?? '').split(/\s+/).filter(Boolean);
+        let line = '';
+        const lines = [];
+        words.forEach((word) => {
+          if (!line){
+            line = word;
+          } else if ((line + ' ' + word).length <= maxChars){
+            line += ` ${word}`;
+          } else {
+            lines.push(line);
+            line = word;
+          }
+        });
+        if (line) lines.push(line);
+        lines.forEach((textLine) => {
+          ensureSpace(size + 5);
+          drawText(textLine, margin + indent, y, size, Boolean(options.bold), options.color);
+          y += size + 5;
+        });
+      }
+
+      function sectionHeading(label){
+        ensureSpace(34);
+        y += 12;
+        drawText(label.toUpperCase(), margin, y, 10, true, '0.21 0.29 0.74');
+        y += 7;
+        const lineY = pageHeight - y;
+        commands.push(`0.82 0.85 0.90 RG 0.7 w ${margin} ${lineY} m ${pageWidth - margin} ${lineY} l S`);
+        y += 14;
+      }
+
+      function writeEntries(entries){
+        entries.forEach((entry) => {
+          const heading = [entry.title, entry.meta].filter(Boolean).join(' - ');
+          writeWrapped(heading, { size: 11, bold: true });
+          if (entry.role) writeWrapped(entry.role, { size: 9, bold: true, color: '0.21 0.29 0.74' });
+          if (entry.description) writeWrapped(entry.description, { size: 9 });
+          if (Array.isArray(entry.bullets)){
+            entry.bullets.forEach((bullet) => writeWrapped(`- ${bullet}`, { size: 9, indent: 10 }));
+          }
+          if (Array.isArray(entry.tags) && entry.tags.length){
+            writeWrapped(entry.tags.join(' | '), { size: 8, color: '0.40 0.44 0.52' });
+          }
+          y += 7;
+        });
+      }
+
+      startPage();
+      drawText('Harshit Kumar Sinha', margin, y, 25, true, '0.09 0.11 0.15');
+      y += 30;
+      drawText('UI/UX Designer', margin, y, 13, true, '0.32 0.41 0.91');
+      y += 21;
+      writeWrapped('harshitbxrr@gmail.com  |  linkedin.com/in/harshit-sinha-872bb9257  |  behance.net/harshitsinha1', { size: 8, color: '0.21 0.29 0.74' });
+
+      sectionHeading('Profile');
+      writeWrapped(data.profile);
+      sectionHeading('Skills');
+      writeWrapped(data.skills.join(' | '), { size: 9 });
+
+      if (data.experience.length){
+        sectionHeading('Experience');
+        writeEntries(data.experience);
+      }
+      if (data.projects.length){
+        sectionHeading('Selected Projects');
+        writeEntries(data.projects);
+      }
+      sectionHeading('Strengths');
+      writeWrapped(data.strengths.join(' | '), { size: 9 });
+
+      const objects = [];
+      objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+      const pageIds = pages.map((_, index) => 5 + index * 2);
+      objects[2] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pages.length} >>`;
+      objects[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+      objects[4] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
+      pages.forEach((pageCommands, index) => {
+        const pageId = 5 + index * 2;
+        const stream = pageCommands.join('\n');
+        const streamLength = new TextEncoder().encode(stream).length;
+        objects[pageId] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${pageId + 1} 0 R >>`;
+        objects[pageId + 1] = `<< /Length ${streamLength} >>\nstream\n${stream}\nendstream`;
+      });
+
+      let pdf = '%PDF-1.4\n';
+      const offsets = [0];
+      for (let id = 1; id < objects.length; id++){
+        offsets[id] = new TextEncoder().encode(pdf).length;
+        pdf += `${id} 0 obj\n${objects[id]}\nendobj\n`;
+      }
+      const xrefOffset = new TextEncoder().encode(pdf).length;
+      pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+      for (let id = 1; id < objects.length; id++){
+        pdf += `${String(offsets[id]).padStart(10, '0')} 00000 n \n`;
+      }
+      pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+      return new Blob([pdf], { type: 'application/pdf' });
+    }
+
+    document.getElementById('downloadResume').addEventListener('click', () => {
+      const pdf = makeResumePdf(resumeData);
+      const downloadUrl = URL.createObjectURL(pdf);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = 'Harshit-Kumar-Sinha-Resume.pdf';
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    });
+  </script>
+</body>
+</html>
