@@ -12,15 +12,15 @@
 <style>
   :root{
     --ink:#14161C;
-    --ink-soft:#4B4D57;
-    --muted:#82838C;
-    --paper:#F6F5F1;
+    --ink-soft:#383A44;
+    --muted:#646672;
+    --paper:#F7F6F2;
     --surface:#FFFFFF;
-    --line:#E4E2DC;
+    --line:#E1DFD8;
     --accent:#2A4FE0;
     --accent-deep:#17309E;
     --accent-text:#17309E;
-    --accent-soft:#E9EDFC;
+    --accent-soft:#EBF0FD;
     --warm:#F2A93B;
     --warm-soft:#FBEFD8;
     --warm-text:#8A5A0C;
@@ -32,9 +32,9 @@
     --r-md:16px;
     --r-lg:24px;
     --r-xl:32px;
-    --shadow-sm:0 1px 2px rgba(20,22,28,.05), 0 1px 1px rgba(20,22,28,.04);
-    --shadow-md:0 10px 30px rgba(20,22,28,.08);
-    --shadow-lg:0 30px 70px rgba(20,22,28,.16);
+    --shadow-sm:0 1px 3px rgba(20,22,28,.04), 0 1px 2px rgba(20,22,28,.03);
+    --shadow-md:0 10px 28px rgba(20,22,28,.07);
+    --shadow-lg:0 24px 60px rgba(20,22,28,.11);
     --maxw:1180px;
     --ease:cubic-bezier(.22,.8,.32,1);
     color-scheme:light;
@@ -122,13 +122,20 @@
 
   /* ================= THEME TOGGLE ================= */
   .theme-toggle{
-    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
-    background:none; border:1px solid var(--line); border-radius:10px; color:var(--ink);
-    transition:border-color .2s var(--ease), color .2s var(--ease), transform .3s var(--ease);
+    width:42px; height:42px; display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--accent); border-radius:12px; color:var(--accent);
+    box-shadow:var(--shadow-sm);
+    transition:border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease), transform .3s var(--ease);
   }
-  .theme-toggle:hover{ border-color:var(--accent); color:var(--accent); }
+  .theme-toggle:hover{ border-color:var(--accent-deep); color:var(--accent-deep); background:var(--accent-soft); }
   .theme-toggle svg{ transition:transform .35s var(--ease); }
   .theme-toggle:active svg{ transform:rotate(20deg) scale(.9); }
+  html[data-theme="dark"] .theme-toggle{
+    background:var(--surface); border-color:var(--line); color:var(--accent-text);
+  }
+  html[data-theme="dark"] .theme-toggle:hover{
+    border-color:var(--accent); color:var(--accent); background:var(--accent-soft);
+  }
 
   /* ================= NAV ================= */
   header.nav{
@@ -718,7 +725,6 @@
         <span class="frame-hint"><svg class="icon"><use href="#i-drag"/></svg> Drag me</span>
       </div>
       <div data-reveal>
-        <h2>Hello!</h2>
         <p class="about-lede">Hi, my name is <b>Harshit</b>. I care about building clear, useful, and considered digital products.</p>
         <p>I'm a UI/UX designer working across mobile and web, focused on the space where user research, interaction design, and visual craft meet. I like turning an early idea into an experience that feels calm, obvious, and intentional.</p>
         <p>My process is hands-on: understand the problem, map the structure, design the details, and keep testing until the interface holds up under real use. I value clean systems, honest feedback, and interfaces that don't need a manual.</p>
