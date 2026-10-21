@@ -53,7 +53,7 @@
       <h1>Harshit Kumar Sinha</h1>
       <p class="title">UI/UX Designer</p>
       <div class="contact">
-        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer">harshitbxrr@gmail.com</a>
+        <a href="mailto:harshitbxrr@gmail.com" class="contact-email">harshitbxrr@gmail.com</a>
         <a href="https://www.linkedin.com/in/harshit-sinha-872bb9257?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a href="https://www.behance.net/harshitsinha1" target="_blank" rel="noopener noreferrer">Behance</a>
       </div>
@@ -320,6 +320,21 @@
       link.download = 'Harshit-Kumar-Sinha-Resume.pdf';
       link.click();
       window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    });
+    // Email links: direct mobile tap to native mail / Gmail app compose; on desktop open Gmail web in new tab
+    const emailLinks = document.querySelectorAll('a[href^=mailto:], .contact-email');
+    emailLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                         (window.matchMedia && window.matchMedia('(max-width: 768px)').matches && 'ontouchstart' in window);
+        if (isMobile) {
+          e.preventDefault();
+          window.location.href = 'mailto:harshitbxrr@gmail.com';
+        } else {
+          e.preventDefault();
+          window.open('https://mail.google.com/mail/?view=cm&fs=1&to=harshitbxrr@gmail.com', '_blank', 'noopener,noreferrer');
+        }
+      });
     });
   </script>
 </body>

@@ -696,7 +696,7 @@
             <a href="Harshit_Kumar_Sinha_Resume_Clickable_Contacts.pdf" class="btn btn-ghost" target="_blank" rel="noopener noreferrer"><svg class="icon" style="width:16px;height:16px"><use href="#i-external"/></svg> View Resume</a>
           </div>
           <div class="hero-links">
-            <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><svg class="icon"><use href="#i-mail"/></svg></a>
+            <a href="mailto:harshitbxrr@gmail.com" class="hero-email-link" aria-label="Email"><svg class="icon"><use href="#i-mail"/></svg></a>
             <a href="#work" aria-label="Work"><svg class="icon"><use href="#i-grid"/></svg></a>
             <button type="button" id="shareBtn" aria-label="Share portfolio" title="Share portfolio"><svg class="icon"><use href="#i-external"/></svg></button>
           </div>
@@ -997,7 +997,7 @@
             <span class="contact-avail"><i></i> Harshit / Available for new projects</span>
             <h2>Let's design something meaningful.</h2>
             <p class="contact-sub">Have a product that needs a fresh look, or an idea that hasn't been designed yet? I'd love to hear about it.</p>
-            <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer" class="contact-email"><svg class="icon"><use href="#i-mail"/></svg> harshitbxrr@gmail.com</a>
+            <a href="mailto:harshitbxrr@gmail.com" class="contact-email"><svg class="icon"><use href="#i-mail"/></svg> harshitbxrr@gmail.com</a>
             <div class="contact-social">
               <a href="https://www.behance.net/harshitsinha1" target="_blank" rel="noopener noreferrer">Behance</a>
               <a href="https://www.linkedin.com/in/harshit-sinha-872bb9257?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -1035,7 +1035,7 @@
       <div class="footer-links">
         <a href="https://www.behance.net/harshitsinha1" target="_blank" rel="noopener noreferrer">Behance</a>
         <a href="https://www.linkedin.com/in/harshit-sinha-872bb9257?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=harshitbxrr%40gmail.com" target="_blank" rel="noopener noreferrer">Email</a>
+        <a href="mailto:harshitbxrr@gmail.com" class="footer-email-link">Email</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1135,6 +1135,24 @@
     window.location.href = composeUrl.toString();
   });
 
+  // Email links: direct mobile tap to native mail / Gmail app compose; on desktop open Gmail web in new tab
+  const emailLinks = document.querySelectorAll('a[href^="mailto:"], .contact-email, .hero-email-link, .footer-email-link');
+  emailLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                       (window.matchMedia && window.matchMedia('(max-width: 768px)').matches && 'ontouchstart' in window);
+      if (isMobile) {
+        // Tapping on mobile opens native email / Gmail app compose directly without a blank screen
+        e.preventDefault();
+        window.location.href = 'mailto:harshitbxrr@gmail.com';
+      } else {
+        // On desktop, open Gmail web compose in a new tab for seamless browser emailing
+        e.preventDefault();
+        window.open('https://mail.google.com/mail/?view=cm&fs=1&to=harshitbxrr%40gmail.com', '_blank', 'noopener,noreferrer');
+      }
+    });
+  });
+
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
   const mobilePanel = document.getElementById('mobilePanel');
@@ -1159,7 +1177,7 @@
       mascotWidget.style.removeProperty('--mascot-safe-bottom');
       mascotWidget.style.visibility = '';
       const viewportHeight = document.documentElement.clientHeight;
-      const emails = [...document.querySelectorAll('.contact-email, footer .footer-links a[href*="mail.google.com/mail"]')]
+      const emails = [...document.querySelectorAll('.contact-email, footer .footer-links a[href*="mailto"], footer .footer-links a[href*="mail.google.com/mail"]')]
         .filter((email) => email.getClientRects().length)
         .map((email) => email.getBoundingClientRect())
         .filter((rect) => rect.bottom > 0 && rect.top < viewportHeight);
